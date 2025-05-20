@@ -40,7 +40,7 @@ if (!document.getElementById("annotationToolbar")) {
         <button id="save" title="Take Snapshot">📸</button>
         <button id="exit">❌</button>
         <div id="modal" class="modal">
-            <div id="modal-header">
+            <div id="modal-header" class="title">
                 <select id="font-select">
                     <option value="Arial" selected>Arial</option>
                     <option value="sans-serif">Sans Serif</option>
@@ -611,49 +611,8 @@ function injectCanvas() {
             autoNumber = 0;
             autoLetterIndex = 0;
         };
-        function makeDraggable(element, dragHandle) {
-            let isDragging = false;
-            let offsetX, offsetY;
-            // Use the element itself if no handle provided
-            dragHandle = dragHandle || element;
-            dragHandle.addEventListener("mousedown", function (e) {
-                if (e.target !== this) return;
-                // Only left mouse button
-                if (e.button !== 0) return;
 
-                isDragging = true;
-                // Get element's current position
-                const rect = element.getBoundingClientRect();
-                // Calculate offset between mouse and element position
-                offsetX = e.clientX - rect.left;
-                offsetY = e.clientY - rect.top;
-                // Ensure element is positioned (absolute or fixed)
-                element.style.position = "fixed";
-                element.style.left = rect.left + "px";
-                element.style.top = rect.top + "px";
-                // Remove transform to allow free positioning
-                modal.style.transform = "none";
-                // Prevent text selection and other default behaviors
-                e.preventDefault();
-            });
-
-            document.addEventListener("mousemove", function (e) {
-                if (!isDragging) return;
-
-                // Calculate new position
-                const x = e.clientX - offsetX;
-                const y = e.clientY - offsetY;
-
-                // Update element position
-                element.style.left = x + "px";
-                element.style.top = y + "px";
-            });
-
-            document.addEventListener("mouseup", function () {
-                isDragging = false;
-            });
-        }
-        makeDraggable(modal, modalHeader);
+        makeDraggable(modal);
 
         // Stop scrolling document when mouse on modal
         function disableScroll() {
